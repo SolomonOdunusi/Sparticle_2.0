@@ -1,6 +1,8 @@
+import Navbar from "./components/navbar.component";
+
 const App = () => {
     return (
-        <h1>Sparticle App</h1>
+        <Navbar />
     )
 }
 
