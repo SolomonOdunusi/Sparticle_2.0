@@ -39,14 +39,15 @@
     }
 
     .navbar-logo {
-        @apply flex-none w-56;
+        @apply flex-none w-48;
     }
 
     .search-box{
-        @apply absolute bg-white border border-grey rounded-md py-4 px-[5vw] w-full max-w-[500px] top-full left-0 right-0 md:border-0 md:block md:relative md:inset-0 md:w-auto md:p-0;
+        @apply absolute bg-white border border-grey py-4 px-[5vw] w-full max-w-[500px] top-full left-0 right-0 md:border-0 md:block md:relative md:inset-0 md:w-auto md:p-0;
     }
+
     .search-box > .search {
-        @apply w-full md:w-auto rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-dark-grey;
+        @apply w-full md:w-auto rounded-2xl p-2 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-dark-grey;
     }
 
     .h-cover{
@@ -65,7 +66,19 @@
         @apply btn-dark bg-grey text-black;
     }
 
-    .input-box {
+    .btn-trns{
+        @apply whitespace-nowrap bg-transparent border-2 text-black py-2 px-6 text-xl capitalize hover:bg-black hover:text-white;
+    }
+
+    .or-separator{
+        @apply relative w-full flex items-center gap-2 my-10 opacity-20 text-black font-bold
+    }
+
+    .line-div{
+        @apply w-1/2 border-black
+    }
+
+    .input-box{
         @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black;
     }
 
@@ -77,8 +90,11 @@
         @apply absolute left-4 top-1/2 -translate-y-1/2;
     }
 
-    .link{
+    /* .link{
         @apply text-dark-grey hover:text-black hover:bg-grey p-3 px-4 block opacity-75;
+    } */
+    .link {
+        @apply text-dark-grey hover:text-black hover:bg-grey p-3 px-4 block transition-opacity duration-300 ease-in-out;
     }
 
     .hide{
