@@ -19,3 +19,9 @@ The features include:
 13. Also user can change login password from settings.
 14. Its mobile responsive with modern design + fade in animation on pages.
 And much more.
+
+
+
+## Security
+
+Using Token Based Authentication, Token-based authentication is a method of authentication where users authenticate themselves by providing a token, typically a JSON Web Token (JWT), instead of traditional credentials such as a username and password.

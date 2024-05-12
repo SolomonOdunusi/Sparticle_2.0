@@ -1,14 +1,91 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import InputBox from '../components/input.component';
 import google from '../imgs/google.png'
 import { Link } from 'react-router-dom';
 import PageAnimation from '../common/page-animation';
+import {Toaster, toast} from 'react-hot-toast';
+import axios from 'axios';
 
 const UserAuthForm = ({type}) => {
+
+    const formRef = useRef();
+    const url = import.meta.env.VITE_SERVER_DOMAIN;
+
+    const handleUserAuth = (serverRoute, formData) => {
+        console.log(url + serverRoute, formData)
+        axios.post(url + serverRoute, formData)
+
+        // Success handling
+        .then(({ data }) => {
+            console.log(data)
+            // toast.success(data.message)
+        })
+        // Error handling
+        .catch(({response}) => {
+            toast.error(response.data.error)
+        });
+    //     // axios {
+    //     //     response: {
+    //     //         data: {
+    //     //             message
+    //     //         }
+    //     //     }
+    //     // }
+
+    }
+
+    // Handle the submission of the form
+    const handleSubmit = (e) => {
+        // To prevent from sending the form without validation
+        e.preventDefault();
+
+        let serverRoute = type == "Sign In" ? "/signin" : "/signup";
+
+        let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
+        let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+
+        let form = new FormData(formRef.current)
+
+        let formData = {}
+
+
+        // Iterate through the form fullname, email and password
+        for (let [key, value] of form.entries()){
+            formData[key] = value;
+        }
+
+        console.log(formData)
+
+        let {fullname, email, password} = formData;
+
+// // Validate the data
+        if (fullname) {
+            if (fullname.length < 3) {
+                return toast.error("Full Name must be at least 3 letters long")
+            }
+        }                
+        if (!email.length) {
+            return toast.error("Email is required")
+        }
+        if (password.length < 6) {
+            return toast.error("Password must be at least 6 characters long")
+        }
+        if (!emailRegex.test(email)) {
+            return toast.error("Email must be valid")
+        }
+        if (!passwordRegex.test(password)) {
+            return toast.error("Password must contain at least one number, one uppercase and one lowercase letter")
+        }
+
+
+        handleUserAuth(serverRoute, formData)
+
+    }
   return (
     <PageAnimation keyValue={type}>
         <section className='h-cover flex items-center justify-center'>
-            <form action="" className='w-[80%] max-w[400px]'>
+            <Toaster />
+            <form ref={formRef} className='w-[80%] max-w[400px]'>
                 <h1 className='text-4xl font-gelasio capitalize text-center mb-24'>
                     {type == "Sign In" ? "Welcome back Y'all" : "Join us today"}
                 </h1>
@@ -36,7 +113,7 @@ const UserAuthForm = ({type}) => {
                     />
 
                 <button
-                    className='btn-trns rounded-md center mt-16' type='submit'>
+                    className='btn-trns rounded-md center mt-16' type='submit' onClick={handleSubmit}>
                         {type}
                 </button>
 
