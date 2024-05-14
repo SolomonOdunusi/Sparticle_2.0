@@ -1,15 +1,22 @@
 import React, { useRef } from 'react'
 import InputBox from '../components/input.component';
 import google from '../imgs/google.png'
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import PageAnimation from '../common/page-animation';
 import {Toaster, toast} from 'react-hot-toast';
 import axios from 'axios';
+import { storeSession } from '../common/session';
+import { useContext } from 'react';
+import { userContext } from '../App';
 
 const UserAuthForm = ({type}) => {
 
     const formRef = useRef();
     const url = import.meta.env.VITE_SERVER_DOMAIN;
+
+    let { userAuth: {access_token}, setUserAuth } = useContext(userContext);
+
+    console.log(access_token)
 
     const handleUserAuth = (serverRoute, formData) => {
         console.log(url + serverRoute, formData)
@@ -17,12 +24,15 @@ const UserAuthForm = ({type}) => {
 
         // Success handling
         .then(({ data }) => {
-            console.log(data)
-            // toast.success(data.message)
+            storeSession("user", JSON.stringify(data))
+            setUserAuth(data)
+
+            toast.success("Welcome back to Sparticle!")
         })
         // Error handling
         .catch(({response}) => {
-            toast.error(response.data.error)
+            // toast.error(response.data.error)
+            toast.error("An error occurred, please try again")
         });
     //     // axios {
     //     //     response: {
@@ -77,11 +87,13 @@ const UserAuthForm = ({type}) => {
             return toast.error("Password must contain at least one number, one uppercase and one lowercase letter")
         }
 
-
         handleUserAuth(serverRoute, formData)
 
     }
   return (
+    access_token ?
+    <Navigate to="/" />
+    :
     <PageAnimation keyValue={type}>
         <section className='h-cover flex items-center justify-center'>
             <Toaster />
